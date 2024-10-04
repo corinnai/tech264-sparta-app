@@ -1,3 +1,37 @@
+# Setting the test app with the VM
+
+
+# How to add a port
+1. Navigate to your VM's **network settings**.
+2. Open up **Settings** and click **inbound security rules**.
+3. Change the **destination port** to `3000`.
+4. Change protocol to **TCP**.
+5. Change the priority. The **lower** the priority, the **higher** the priority
+
+# SCP command and how it works
+1. in `GitBash` paste this command
+ ```bash
+ scp -i /path/to/your/private_key -r /path/to/local/directory username@remote_ip:/path/to/remote/destination/
+ #This is the command used to securely copy files or directories between a local machine and a remote machine over SSH.
+ ```
+2. `connect to the vm using the SSH Key`
+3. `ls` : supposed to have :
+![app](app_prov-app.sh.png)
+4. `cd into app`
+5. `ls`
+6. 
+```bash
+npm install
+```
+7. 
+```bash
+npm audit fix
+```
+8. 
+```bash
+npm start
+```
+
 # Setting the database on a VM
 
 ## Creating a VM
@@ -26,7 +60,7 @@
 
 3. **Open GitBash** 
 
-## GitBash
+## Install MongoDB on Azure
 
 **Open GitBash** :
 
@@ -54,10 +88,33 @@ sudo apt-get install gnupg curl
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
    sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
    --dearmor
+
+
+1.	curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc:
+•	curl: This is a command-line tool used to download files from the internet.
+•	-f: This option makes curl "fail silently" if there’s a server error, meaning it won’t show an error message on the screen.
+•	-s: This stands for "silent," which means curl won’t show progress information while downloading.
+•	-S: This option ensures that if there is an error, an error message will still be displayed.
+•	-L: This tells curl to follow any redirects if the URL changes.
+•	https://www.mongodb.org/static/pgp/server-7.0.asc: This is the URL where the MongoDB security key is located.
+2.	| (Pipe):
+•	This symbol takes the output from the command on the left (the downloaded key) and sends it to the command on the right (the gpg command).
+3.	sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor:
+•	sudo: This stands for "superuser do." It allows you to run commands that require administrative rights.
+•	gpg: This is the GNU Privacy Guard, a tool that helps manage security keys and perform encryption.
+•	-o /usr/share/keyrings/mongodb-server-7.0.gpg: This option tells gpg where to save the downloaded key file, naming it mongodb-server-7.0.gpg.
+•	--dearmor: This option converts the key from its text format (ASCII-armored) to a binary format that’s easier for the system to use.
 ```
+
 5. **Create the list file for Ubuntu 22.04**:
 ```bash
 echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+
+
+1.	echo "deb [...]":
+•	echo: This command outputs the text provided within the quotes, which includes the details about the MongoDB repository.
+•	"deb [...]": This string defines the new repository, indicating we want to add it to our package sources.
 ```
 6. **Reload the Package Database( to find the latest version)**:
 ```bash
@@ -67,6 +124,11 @@ sudo apt-get update -y
 7. **Install MongoDB** :
 ```bash
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org=7.0.6 mongodb-org-database=7.0.6 mongodb-org-server=7.0.6 mongodb-mongosh=2.1.5 mongodb-org-mongos=7.0.6 mongodb-org-tools=7.0.6
+
+
+
+#	DEBIAN_FRONTEND=noninteractive:
+      # This tells the system to run the command without asking for any user input, which is useful for automation.
 ```
 
 8. **If this image pops up**: `tab -> enter`
